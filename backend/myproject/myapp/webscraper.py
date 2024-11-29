@@ -1,10 +1,6 @@
 import json
 import requests
 from bs4 import BeautifulSoup
-import re
-import pandas as pd
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
 def scrap(url):
