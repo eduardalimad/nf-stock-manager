@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -23,10 +24,10 @@ def scrap(url):
             emissao_data = None
         if emissao_data:
             try:
-                # Converter a data para um objeto datetime
+                
                 emissao_data = datetime.strptime(emissao_data, "%d/%m/%Y")
             except ValueError:
-                emissao_data = None  # Caso o formato não seja válido, define como None
+                emissao_data = None  
         header = {
             "vendedor": txt_topo,
             "valorTotal": total_value,
@@ -46,19 +47,17 @@ def scrap(url):
             }
 
             # Tratando os valores para converter de string com vírgula para float
-            if item["valor_total"]:
-                item["valor_total"] = item["valor_total"].replace(",", ".")  # Substitui a vírgula por ponto
-                item["valor_total"] = float(item["valor_total"])  # Converte para float
+            # if item["valor_total"]:
+            #     item["valor_total"] = item["valor_total"].replace(",", ".")  # Substitui a vírgula por ponto
+            #     item["valor_total"] = float(item["valor_total"])  # Converte para float
 
             items.append(item)
 
             if item["quantidade"]:
-                item["quantidade"] = item["quantidade"].replace(",", ".")  # Substitui a vírgula por ponto
-                item["quantidade"] = float(item["quantidade"])  # Converte para float
+                item["quantidade"] = item["quantidade"].replace(",", ".")  
+                item["quantidade"] = float(item["quantidade"])  
 
             items.append(item)
-
-        json_data = json.dumps(items, indent=4, ensure_ascii=False)
         
         return {
             "header": header,

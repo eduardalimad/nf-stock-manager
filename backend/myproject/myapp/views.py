@@ -102,7 +102,7 @@ def post_create_view(request):
 
                 # Criar a instância de Item
                 Item.objects.create(
-                    compra=compra,  # Associar o item à compra criada
+                    compra=compra,
                     titulo=titulo,
                     quantidade=quantidade,
                     unidade=unidade,
@@ -126,38 +126,51 @@ def post_create_view(request):
 def get_compras(request):
     if request.method == 'GET':
         try:
-            # Buscar todas as compras e seus itens relacionados
-            compras = Compra.objects.all()
+
+            compras = Compra.objects.all().order_by('-dataCompra')
             compras_data = []
 
-            # Iterar sobre cada compra
             for compra in compras:
-                # Obter os itens relacionados à compra
-                itens = Item.objects.filter(compra=compra)
-                
-                # Criar um dicionário para armazenar as informações
                 compra_info = {
+                    'id': compra.id,
                     'vendedor': compra.vendedor,
                     'valorTotal': str(compra.valorTotal),
-                    'dataCompra': compra.dataCompra.strftime('%Y-%m-%d'),  # Converter a data para string
-                    'itens': []
+                    'dataCompra': compra.dataCompra.strftime('%Y-%m-%d'),
                 }
-
-                # Adicionar os itens associados à compra
-                for item in itens:
-                    item_info = {
-                        'titulo': item.titulo,
-                        'quantidade': item.quantidade,
-                        'unidade': item.unidade,
-                        'valor_unitario': str(item.valor_unitario),
-                        'valor_total': str(item.valor_total)
-                    }
-                    compra_info['itens'].append(item_info)
-
-                # Adicionar a compra à lista de dados
                 compras_data.append(compra_info)
 
             return JsonResponse({'compras': compras_data}, safe=False)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+def listar_itens_de_compra(request, id):
+    if request.method == 'GET':
+        try:
+            # Buscar a compra pelo ID
+            compra = Compra.objects.get(id=id)
+
+            # Obter os itens relacionados à compra
+            itens = Item.objects.filter(compra=compra)
+
+            itens_data = []
+
+            for item in itens:
+                item_info = {
+                    'titulo': item.titulo,
+                    'quantidade': item.quantidade,
+                    'unidade': item.unidade,
+                    'valor_unitario': str(item.valor_unitario),
+                    'valor_total': str(item.valor_total)
+                }
+                itens_data.append(item_info)
+
+            return JsonResponse({'compra': compra.vendedor, 'itens': itens_data}, safe=False)
+
+        except Compra.DoesNotExist:
+            return JsonResponse({'error': 'Compra não encontrada'}, status=404)
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
