@@ -16,9 +16,7 @@ export default function StockScreen() {
   };
   return (
     <View style={styles.container}>
-      <ProductCard title='teste' onPress={openModal} /> 
-      <ProductCard title='teste'/> 
-      <ProductCard title='teste'/> 
+      <Text> Em desenvolvimento</Text>
       <Modal visible={viseble} onClose={closeModal} />
     </View>
   );
@@ -27,8 +25,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 15,
     paddingVertical: 20,
   },

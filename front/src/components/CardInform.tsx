@@ -4,17 +4,29 @@ import colors from "../styles/colors";
 import { Text, StyleSheet, View, TouchableOpacity} from "react-native";
 
 interface Props {
-  title: string,
-  onPress?: () => void,
+  title?: string,
+  onPress?: (id: number) => void;
+  data: {
+    id: number;
+    vendedor: string;
+    dataCompra: string;
+    valorTotal: number;
+  };
 }
 
-export function InfoCard({ title, onPress }: Props) {
+export function InfoCard({ data, title, onPress }: Props) {
+  
+  function handleId() {
+    if (onPress) { 
+      onPress(data.id);
+    }
+  }
     return (
-      <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
-        <Text style={styles.cardTitle}>ATACADAO S.A.</Text>
+      <TouchableOpacity style={styles.cardContainer} onPress={handleId}>
+        <Text style={styles.cardTitle}>{data.vendedor}</Text>
         <View style={styles.infoRow}>
-          <Text style={styles.dateText}>10/11/2024</Text>
-          <Text style={styles.invoiceValue}>Valor da NF R$ 1.000</Text>
+          <Text style={styles.dateText}>{data.dataCompra}</Text>
+          <Text style={styles.invoiceValue}>Valor da NF R$ {data.valorTotal}</Text>
         </View>
       </TouchableOpacity>
     );

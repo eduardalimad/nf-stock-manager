@@ -1,26 +1,31 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import colors from "../styles/colors";
 import { Text, StyleSheet, View, TouchableOpacity} from "react-native";
 
 interface Props {
-  title: string,
+  title?: any,
+  data: any,
   onPress?: () => void,
 }
 
-export function ProductCard({ title, onPress }: Props) {
+export function ProductCard({ data, title, onPress }: Props) {
+  useEffect(() => {
+  // console.log(data);
+  
+  }, []);
     return (
       <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
         <View style={styles.header}>
-          <Text style={styles.companyName}>ATACADAO S.A.</Text>
+          <Text style={styles.companyName}>{title} {data.titulo}</Text>
           <View style={styles.quantityContainer}>
-            <Text style={styles.quantityText}>Qtd. 100</Text>
+            <Text style={styles.quantityText}>Qtd. {data.quantidade}</Text>
           </View>
         </View>
   
         <View style={styles.priceRow}>
-          <Text style={styles.unitPriceLabel}>Vl. UN. R$ 7,00</Text>
-          <Text style={styles.totalPricePrimary}>Vl. Total R$ 100,00</Text>
+          <Text style={styles.unitPriceLabel}>Vl. UN. R$ {data.valor_unitario}</Text>
+          <Text style={styles.totalPricePrimary}>Vl. Total R$ {data.valor_total}</Text>
         </View>
         <View style={styles.priceRow}>
           <Text style={styles.resalePriceLabel}>Vl. Revenda R$ 10,00</Text>
